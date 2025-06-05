@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root {
+  min-width: 100%;
+}
+
+:root {
+  --background: 280 30% 96%;
+  --foreground: 224 71.4% 4.1%;
+  
+  --card: 0 0% 100%;
+  --card-foreground: 224 71.4% 4.1%;
+  
+  --popover: 0 0% 100%;
+  --popover-foreground: 224 71.4% 4.1%;
+  
+  --primary: 262 83.3% 57.8%;
+  --primary-foreground: 210 20% 98%;
+  
+  --secondary: 220 14.3% 95.9%;
+  --secondary-foreground: 220.9 39.3% 11%;
+  
+  --muted: 220 14.3% 95.9%;
+  --muted-foreground: 220 8.9% 46.1%;
+  
+  --accent: 319 59% 87%;
+  --accent-foreground: 220.9 39.3% 11%;
+  
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 20% 98%;
+
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 262 83.3% 57.8%;
+  
+  --radius: 0.5rem;
+
+  --premium: 320 80% 50%;
+}
+
+.dark {
+  --background: 224 71.4% 4.1%;
+  --foreground: 210 20% 98%;
+  
+  --card: 224 71.4% 4.1%;
+  --card-foreground: 210 20% 98%;
+  
+  --popover: 224 71.4% 4.1%;
+  --popover-foreground: 210 20% 98%;
+  
+  --primary: 263 70% 50%;
+  --primary-foreground: 210 20% 98%;
+  
+  --secondary: 215 27.9% 16.9%;
+  --secondary-foreground: 210 20% 98%;
+  
+  --muted: 215 27.9% 16.9%;
+  --muted-foreground: 217.9 10.6% 64.9%;
+  
+  --accent: 319 59% 40%;
+  --accent-foreground: 210 20% 98%;
+  
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 20% 98%;
+  
+  --border: 215 27.9% 16.9%;
+  --input: 215 27.9% 16.9%;
+  --ring: 263 70% 50%;
+
+  --premium: 320 80% 60%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .premium-blur {
+    @apply relative overflow-hidden;
+  }
+  
+  .premium-blur::before {
+    content: "";
+    @apply absolute inset-0 backdrop-blur-xl bg-black/20 flex items-center justify-center z-10;
+  }
+
+  .premium-blur::after {
+    content: "Subscribe to unlock";
+    @apply absolute inset-0 flex items-center justify-center text-white font-semibold z-20;
+  }
+  
+  .creator-card {
+    @apply relative overflow-hidden rounded-xl transition-all duration-300 hover:shadow-lg;
+  }
+  
+  .creator-card:hover {
+    @apply transform scale-[1.02];
+  }
+}
+
+.container {
+  max-width: none;
+  padding: 2rem;
+}
