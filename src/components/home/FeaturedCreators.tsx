@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Creator } from '@/lib/types';
-import { getCreators } from '@/lib/api';
+
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
+import { getCreators } from '@/lib/services/creators';
 
 const FeaturedCreators: React.FC = () => {
   const [creators, setCreators] = useState<Creator[]>([]);
@@ -19,8 +20,11 @@ const FeaturedCreators: React.FC = () => {
       try {
         setIsLoading(true);
         const response = await getCreators();
+        console.log('Fetched creators:', response);
         // Just show top 4 creators for the featured section
-        setCreators(response.data.slice(0, 4));
+        if(response.length > 0) {
+          setCreators(response.slice(0, 4));
+        }
       } catch (error) {
         console.error('Error fetching creators:', error);
         toast({

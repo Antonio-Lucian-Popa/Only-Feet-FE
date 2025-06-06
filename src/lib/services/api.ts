@@ -1,7 +1,7 @@
 import axios from 'axios';
+import { API_URL } from '@/utils/constants';
 
 // We'll assume the API is at this URL. In a real project, you'd set this in an env variable
-const API_URL = 'https://api.onlyfeet.example';
 
 // Create axios instance with default config
 const api = axios.create({

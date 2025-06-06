@@ -2,7 +2,7 @@ import api from './api';
 import { Creator } from '@/lib/types';
 
 export const getCreators = async () => {
-  const response = await api.get<{ data: Creator[] }>('/creators');
+  const response = await api.get<Creator[]>('/creators');
   return response.data;
 };
 
