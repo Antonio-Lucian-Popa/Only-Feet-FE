@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { Creator, Media, Subscription, User, ApiResponse } from './types';
-
-// We'll assume the API is at this URL. In a real project, you'd set this in an env variable
-const API_URL = 'https://api.onlyfeet.example';
+import { API_URL } from '@/utils/constants';
 
 // Create axios instance with default config
 const api = axios.create({
