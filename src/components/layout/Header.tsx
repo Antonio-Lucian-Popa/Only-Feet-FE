@@ -74,7 +74,7 @@ const Header: React.FC = () => {
               {isAuthenticated && user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Button variant="ghost\" className="relative h-10 w-10 rounded-full">
                       <Avatar className="h-10 w-10">
                         <AvatarImage src={user.profilePicture} alt={user.firstName} />
                         <AvatarFallback>{getInitials(user.firstName || 'User')}</AvatarFallback>
