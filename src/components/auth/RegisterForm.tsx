@@ -9,6 +9,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import {
   RadioGroup,
   RadioGroupItem
 } from '@/components/ui/radio-group';
@@ -33,12 +41,7 @@ const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<RegisterFormValues>({
+  const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       firstName: '',
@@ -50,7 +53,7 @@ const RegisterForm: React.FC = () => {
     },
   });
 
-  const role = watch('role');
+  const selectedRole = form.watch('role');
 
   const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true);
@@ -83,107 +86,145 @@ const RegisterForm: React.FC = () => {
         <p className="text-muted-foreground">Enter your details to get started</p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="firstname">First Name</Label>
-          <Input
-            id="firstName"
-            type="text"
-            placeholder="johndoe"
-            autoComplete="firstName"
-            {...register('firstName')}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="John"
+                    autoComplete="given-name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.firstName && (
-            <p className="text-sm text-destructive">{errors.firstName.message}</p>
-          )}
-        </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="firstname">Last Name</Label>
-          <Input
-            id="lastName"
-            type="text"
-            placeholder="johndoe"
-            autoComplete="lastName"
-            {...register('lastName')}
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Doe"
+                    autoComplete="family-name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.lastName && (
-            <p className="text-sm text-destructive">{errors.lastName.message}</p>
-          )}
-        </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="you@example.com"
-            autoComplete="email"
-            {...register('email')}
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="you@example.com"
+                    autoComplete="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.email && (
-            <p className="text-sm text-destructive">{errors.email.message}</p>
-          )}
-        </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            autoComplete="new-password"
-            {...register('password')}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    autoComplete="new-password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.password && (
-            <p className="text-sm text-destructive">{errors.password.message}</p>
-          )}
-        </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="confirmPassword">Confirm Password</Label>
-          <Input
-            id="confirmPassword"
-            type="password"
-            autoComplete="new-password"
-            {...register('confirmPassword')}
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    autoComplete="new-password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.confirmPassword && (
-            <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
-          )}
-        </div>
 
-        <div className="space-y-2">
-          <Label>I want to join as a:</Label>
-          <RadioGroup defaultValue="USER" className="flex space-x-4" {...register('role')}>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="USER" id="user" />
-              <Label htmlFor="user" className="cursor-pointer">User</Label>
+          <FormField
+            control={form.control}
+            name="role"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>I want to join as a:</FormLabel>
+                <FormControl>
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex space-x-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="USER" id="user" />
+                      <Label htmlFor="user" className="cursor-pointer">User</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="CREATOR" id="creator" />
+                      <Label htmlFor="creator" className="cursor-pointer">Creator</Label>
+                    </div>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {selectedRole === 'CREATOR' && (
+            <div className="rounded-lg border p-3 bg-secondary/30">
+              <p className="text-sm">
+                <strong>Note:</strong> As a creator, you'll be able to set up your profile, upload content, and receive payments from subscribers.
+              </p>
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="CREATOR" id="creator" />
-              <Label htmlFor="creator" className="cursor-pointer">Creator</Label>
-            </div>
-          </RadioGroup>
-        </div>
-
-        {role === 'CREATOR' && (
-          <div className="rounded-lg border p-3 bg-secondary/30">
-            <p className="text-sm">
-              <strong>Note:</strong> As a creator, you'll be able to set up your profile, upload content, and receive payments from subscribers.
-            </p>
-          </div>
-        )}
-
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating account...
-            </>
-          ) : (
-            'Sign Up'
           )}
-        </Button>
-      </form>
+
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating account...
+              </>
+            ) : (
+              'Sign Up'
+            )}
+          </Button>
+        </form>
+      </Form>
 
       <div className="text-center text-sm">
         Already have an account?{' '}
