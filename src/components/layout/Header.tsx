@@ -23,12 +23,12 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const Header: React.FC = () => {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, isLoading } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/');
   };
 
   const getInitials = (name: string) => {
@@ -69,68 +69,70 @@ const Header: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          {isAuthenticated ? (
+          {!isLoading && (
             <>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage src={user?.profilePicture} alt={user?.firstName} />
-                      <AvatarFallback>{getInitials(user?.firstName || 'User')}</AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <div className="flex items-center justify-start gap-2 p-2">
-                    <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">{user?.firstName}</p>
-                      <p className="text-sm text-muted-foreground">{user?.email}</p>
+              {isAuthenticated && user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={user.profilePicture} alt={user.firstName} />
+                        <AvatarFallback>{getInitials(user.firstName || 'User')}</AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <div className="flex items-center justify-start gap-2 p-2">
+                      <div className="flex flex-col space-y-1 leading-none">
+                        <p className="font-medium">{user.firstName} {user.lastName}</p>
+                        <p className="text-sm text-muted-foreground">{user.email}</p>
+                      </div>
                     </div>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile">
-                      <UserIcon className="mr-2 h-4 w-4" />
-                      <span>Profile</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  {user?.role === 'USER' && (
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link to="/subscriptions">
-                        <FootprintsIcon className="mr-2 h-4 w-4" />
-                        <span>My Subscriptions</span>
+                      <Link to="/profile">
+                        <UserIcon className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
                       </Link>
                     </DropdownMenuItem>
-                  )}
-                  {user?.role === 'CREATOR' && (
+                    {user.role === 'USER' && (
+                      <DropdownMenuItem asChild>
+                        <Link to="/subscriptions">
+                          <FootprintsIcon className="mr-2 h-4 w-4" />
+                          <span>My Subscriptions</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
+                    {user.role === 'CREATOR' && (
+                      <DropdownMenuItem asChild>
+                        <Link to="/dashboard">
+                          <ImageIcon className="mr-2 h-4 w-4" />
+                          <span>Creator Dashboard</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem asChild>
-                      <Link to="/dashboard">
-                        <ImageIcon className="mr-2 h-4 w-4" />
-                        <span>Creator Dashboard</span>
+                      <Link to="/settings">
+                        <SettingsIcon className="mr-2 h-4 w-4" />
+                        <span>Settings</span>
                       </Link>
                     </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem asChild>
-                    <Link to="/settings">
-                      <SettingsIcon className="mr-2 h-4 w-4" />
-                      <span>Settings</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
-                    <LogOutIcon className="mr-2 h-4 w-4" />
-                    <span>Logout</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>
+                      <LogOutIcon className="mr-2 h-4 w-4" />
+                      <span>Logout</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="hidden sm:flex sm:items-center sm:gap-4">
+                  <Button variant="ghost" onClick={() => navigate('/login')}>
+                    Login
+                  </Button>
+                  <Button onClick={() => navigate('/register')}>Sign Up</Button>
+                </div>
+              )}
             </>
-          ) : (
-            <div className="hidden sm:flex sm:items-center sm:gap-4">
-              <Button variant="ghost" onClick={() => navigate('/login')}>
-                Login
-              </Button>
-              <Button onClick={() => navigate('/register')}>Sign Up</Button>
-            </div>
           )}
 
           <Sheet>
@@ -145,7 +147,7 @@ const Header: React.FC = () => {
                 <div className="flex flex-col space-y-3">
                   <NavItems />
                 </div>
-                {!isAuthenticated && (
+                {!isAuthenticated && !isLoading && (
                   <div className="flex flex-col gap-2">
                     <Button variant="outline" onClick={() => navigate('/login')}>
                       Login
