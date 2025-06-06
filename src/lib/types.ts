@@ -6,6 +6,7 @@ export interface User {
   role: 'CREATOR' | 'USER';
   profilePicture?: string;
   bio?: string;
+  username?: string;
   createdAt: string;
 }
 
