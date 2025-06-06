@@ -11,6 +11,7 @@ import CreatorProfilePage from '@/pages/CreatorProfilePage';
 import CreatorDashboardPage from '@/pages/CreatorDashboardPage';
 import SubscriptionsPage from '@/pages/SubscriptionsPage';
 import { useAuth } from '@/context/AuthContext';
+import SettingsPage from './pages/SettingsPage';
 
 const ProtectedRoute: React.FC<{ element: React.ReactNode }> = ({ element }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -39,6 +40,10 @@ const App: React.FC = () => {
               <Route 
                 path="subscriptions" 
                 element={<ProtectedRoute element={<SubscriptionsPage />} />} 
+              />
+               <Route 
+                path="settings" 
+                element={<ProtectedRoute element={<SettingsPage />} />} 
               />
             </Route>
             <Route path="/login" element={<LoginPage />} />

@@ -73,7 +73,7 @@ const Header: React.FC = () => {
             <>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost\" className="relative h-10 w-10 rounded-full">
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                     <Avatar className="h-10 w-10">
                       <AvatarImage src={user?.profilePicture} alt={user?.username} />
                       <AvatarFallback>{getInitials(user?.username || 'User')}</AvatarFallback>
