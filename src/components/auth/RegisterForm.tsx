@@ -16,7 +16,8 @@ import {
 import { FootprintsIcon, Loader2 } from 'lucide-react';
 
 const registerSchema = z.object({
-  username: z.string().min(3, { message: 'Username must be at least 3 characters' }),
+  firstName: z.string().min(3, { message: 'First name must be at least 3 characters' }),
+  lastName: z.string().min(3, { message: 'Last name must be at least 3 characters' }),
   email: z.string().email({ message: 'Please enter a valid email address' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
   confirmPassword: z.string(),
@@ -42,7 +43,8 @@ const RegisterForm: React.FC = () => {
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      username: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -55,13 +57,12 @@ const RegisterForm: React.FC = () => {
   const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true);
     try {
-      const response = await registerUser(data.username, data.email, data.password, data.role);
-      login(response.token, response.user);
+      const response = await registerUser(data.firstName, data.lastName, data.email, data.password, data.role);
+      navigate('/login');
       toast({
         title: 'Registration successful',
-        description: `Welcome to OnlyFeet, ${response.user.username}!`,
+        description: `Welcome to OnlyFeet, ${response.user.firstName}!`,
       });
-      navigate('/');
     } catch (error) {
       console.error('Registration error:', error);
       toast({
@@ -86,16 +87,30 @@ const RegisterForm: React.FC = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="username">Username</Label>
+          <Label htmlFor="firstname">First Name</Label>
           <Input
-            id="username"
+            id="firstName"
             type="text"
             placeholder="johndoe"
-            autoComplete="username"
-            {...register('username')}
+            autoComplete="firstName"
+            {...register('firstName')}
           />
-          {errors.username && (
-            <p className="text-sm text-destructive">{errors.username.message}</p>
+          {errors.firstName && (
+            <p className="text-sm text-destructive">{errors.firstName.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="firstname">Last Name</Label>
+          <Input
+            id="lastName"
+            type="text"
+            placeholder="johndoe"
+            autoComplete="lastName"
+            {...register('lastName')}
+          />
+          {errors.lastName && (
+            <p className="text-sm text-destructive">{errors.lastName.message}</p>
           )}
         </div>
 
