@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getCreator, getCreatorMedia, createCheckoutSession } from '@/lib/api';
+import { getCreator } from '@/lib/services/creators';
+import { getCreatorMedia } from '@/lib/services/media';
+import { createCheckoutSession } from '@/lib/services/subscriptions';
 import { Creator, Media } from '@/lib/types';
 import { useAuth } from '@/context/AuthContext';
 import { useSubscriptions } from '@/context/SubscriptionContext';
@@ -148,13 +150,13 @@ const CreatorProfile: React.FC = () => {
         <CardContent className={`py-6 ${creator.coverPhoto ? '-mt-16' : ''}`}>
           <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
             <Avatar className="h-32 w-32 border-4 border-background">
-              <AvatarImage src={creator.profilePicture} alt={creator.username} />
-              <AvatarFallback>{creator.username.charAt(0).toUpperCase()}</AvatarFallback>
+              <AvatarImage src={creator.profilePicture} alt={creator.firstName} />
+              <AvatarFallback>{creator.firstName.charAt(0).toUpperCase()}</AvatarFallback>
             </Avatar>
             
             <div className="space-y-4 text-center md:text-left flex-1">
               <div>
-                <h1 className="text-3xl font-bold">{creator.username}</h1>
+                <h1 className="text-3xl font-bold">{creator.firstName}</h1>
                 <div className="flex items-center justify-center md:justify-start gap-2 text-muted-foreground mt-1">
                   <CalendarIcon className="h-4 w-4" />
                   <span>Joined {formatDate(creator.createdAt)}</span>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { getCreatorMedia } from '@/lib/api';
+import { getCreatorMedia } from '@/lib/services/media';
 import { Media } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import MediaUploadForm from '@/components/dashboard/MediaUploadForm';

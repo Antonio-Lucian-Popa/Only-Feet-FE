@@ -3,13 +3,14 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { login } from '@/lib/api';
+import { login } from '@/lib/services/auth';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { FootprintsIcon, Loader2 } from 'lucide-react';
+import { getCurrentUser } from '@/lib/services/auth';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -40,10 +41,11 @@ const LoginForm: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await login(data.email, data.password);
-      authLogin(response.token, response.user);
+      authLogin(response.accessToken, response.refreshToken);
+      const responseUser = await getCurrentUser();
       toast({
         title: 'Login successful',
-        description: `Welcome back, ${response.user.username}!`,
+        description: `Welcome back, ${responseUser.firstName}!`,
       });
       navigate('/');
     } catch (error) {

@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
-import { getUserSubscriptions, Subscription } from '@/lib/api';
+import { getUserSubscriptions } from '@/lib/services/subscriptions';
+
+import { Subscription } from '@/lib/types';
 
 interface SubscriptionContextType {
   subscriptions: Subscription[];

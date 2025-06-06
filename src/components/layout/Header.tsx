@@ -75,15 +75,15 @@ const Header: React.FC = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src={user?.profilePicture} alt={user?.username} />
-                      <AvatarFallback>{getInitials(user?.username || 'User')}</AvatarFallback>
+                      <AvatarImage src={user?.profilePicture} alt={user?.firstName} />
+                      <AvatarFallback>{getInitials(user?.firstName || 'User')}</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">{user?.username}</p>
+                      <p className="font-medium">{user?.firstName}</p>
                       <p className="text-sm text-muted-foreground">{user?.email}</p>
                     </div>
                   </div>

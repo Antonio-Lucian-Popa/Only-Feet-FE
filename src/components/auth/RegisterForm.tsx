@@ -3,8 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { register as registerUser } from '@/lib/api';
-import { useAuth } from '@/context/AuthContext';
+import { register as registerUser } from '@/lib/services/auth';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,7 +31,6 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 const RegisterForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
   const { toast } = useToast();
 
   const {
@@ -61,7 +59,7 @@ const RegisterForm: React.FC = () => {
       navigate('/login');
       toast({
         title: 'Registration successful',
-        description: `Welcome to OnlyFeet, ${response.user.firstName}!`,
+        description: `Welcome to OnlyFeet, ${response.firstName}!`,
       });
     } catch (error) {
       console.error('Registration error:', error);

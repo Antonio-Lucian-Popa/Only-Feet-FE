@@ -2,16 +2,17 @@ import api from './api';
 import { User } from '@/lib/types';
 
 export const login = async (email: string, password: string) => {
-  const response = await api.post<{ token: string; user: User }>('/auth/login', { 
+  const response = await api.post<{ accessToken: string; refreshToken: string }>('/auth/login', { 
     email, 
     password 
   });
   return response.data;
 };
 
-export const register = async (username: string, email: string, password: string, role: 'CREATOR' | 'USER') => {
-  const response = await api.post<{ token: string; user: User }>('/auth/register', { 
-    username, 
+export const register = async (firstName: string, lastName: string, email: string, password: string, role: 'CREATOR' | 'USER') => {
+  const response = await api.post<User>('/auth/register', { 
+    firstName,
+    lastName, 
     email, 
     password, 
     role 
@@ -20,6 +21,6 @@ export const register = async (username: string, email: string, password: string
 };
 
 export const getCurrentUser = async () => {
-  const response = await api.get<{ data: User }>('/user/me');
+  const response = await api.get<User>('/auth/me');
   return response.data;
 };

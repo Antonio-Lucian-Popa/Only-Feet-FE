@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useSubscriptions } from '@/context/SubscriptionContext';
 import { useNavigate } from 'react-router-dom';
-import { getCreator } from '@/lib/api';
+import { getCreator } from '@/lib/services/creators';
 import { Creator } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import CreatorCard, { CreatorCardSkeleton } from '@/components/creators/CreatorCard';

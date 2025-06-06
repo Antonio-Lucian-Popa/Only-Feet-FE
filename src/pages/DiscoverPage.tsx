@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSubscriptions } from '@/context/SubscriptionContext';
-import { getCreators } from '@/lib/api';
+import { getCreators } from '@/lib/services/creators';
 import { Creator } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import CreatorCard, { CreatorCardSkeleton } from '@/components/creators/CreatorCard';
@@ -23,8 +23,8 @@ const DiscoverPage: React.FC = () => {
       try {
         setIsLoading(true);
         const response = await getCreators();
-        setCreators(response.data);
-        setFilteredCreators(response.data);
+        setCreators(response);
+        setFilteredCreators(response);
       } catch (error) {
         console.error('Error fetching creators:', error);
         toast({
@@ -47,7 +47,7 @@ const DiscoverPage: React.FC = () => {
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       results = creators.filter(
-        creator => creator.username.toLowerCase().includes(query) || 
+        creator => creator.firstName.toLowerCase().includes(query) || 
                  (creator.bio && creator.bio.toLowerCase().includes(query))
       );
     }

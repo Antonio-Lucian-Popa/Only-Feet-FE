@@ -1,13 +1,13 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { User } from '@/lib/types';
-import { getCurrentUser } from '@/lib/api';
+import { getCurrentUser } from '@/lib/services/auth';
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   setUser: (user: User | null) => void;
-  login: (token: string, user: User) => void;
+  login: (accessToken: string, refreshToken: string) => void;
   logout: () => void;
 }
 
@@ -29,16 +29,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Load user from token on initial load
   useEffect(() => {
     const loadUser = async () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('access_token');
       if (token) {
         try {
           const response = await getCurrentUser();
-          if (response.data) {
-            setUser(response.data);
+          if (response) {
+            setUser(response);
           }
         } catch (error) {
           console.error('Error loading user:', error);
-          localStorage.removeItem('token');
+          localStorage.removeItem('access_token');
         }
       }
       setIsLoading(false);
@@ -47,13 +47,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loadUser();
   }, []);
 
-  const login = (token: string, user: User) => {
-    localStorage.setItem('token', token);
+  const login = (accessToken: string, refreshToken: string) => {
+    localStorage.setItem('access_token', accessToken);
+    localStorage.setItem('refresh_token', refreshToken);
     setUser(user);
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('access_token');
     setUser(null);
   };
 
