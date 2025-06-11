@@ -24,10 +24,10 @@ const CreatorCard: React.FC<CreatorCardProps> = ({ creator, isSubscribed }) => {
       <CardContent className={`pt-6 pb-4 ${!creator.coverPhoto ? 'pt-6' : '-mt-10'}`}>
         <div className="flex flex-col items-center text-center">
           <Avatar className="h-20 w-20 border-4 border-background">
-            <AvatarImage src={creator.profilePicture} alt={creator.username} />
-            <AvatarFallback>{creator.username.charAt(0).toUpperCase()}</AvatarFallback>
+            <AvatarImage src={creator.profilePicture} alt={creator.firstName} />
+            <AvatarFallback>{creator.firstName.charAt(0).toUpperCase()}</AvatarFallback>
           </Avatar>
-          <h3 className="mt-4 font-semibold text-xl">{creator.username}</h3>
+          <h3 className="mt-4 font-semibold text-xl">{creator.firstName}</h3>
           <p className="text-muted-foreground text-sm mt-1">
             {creator.subscribersCount} {creator.subscribersCount === 1 ? 'subscriber' : 'subscribers'}
           </p>
