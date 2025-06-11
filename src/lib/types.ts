@@ -39,6 +39,16 @@ export interface Subscription {
   createdAt: string;
 }
 
+export interface Post {
+  id: string;
+  creatorId: string;
+  title: string;
+  description: string;
+  visibility: string;
+  createdAt: string;
+  mediaFiles: Media[];
+}
+
 export interface ApiResponse<T> {
   data: T;
   message?: string;

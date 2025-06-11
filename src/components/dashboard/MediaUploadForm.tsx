@@ -20,6 +20,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import { ImageIcon, VideoIcon, Loader2Icon, UploadIcon, XIcon } from 'lucide-react';
+import { createPost } from '@/lib/services/creators';
 
 const MAX_FILES = 10;
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
@@ -142,13 +143,13 @@ const MediaUploadForm: React.FC<MediaUploadFormProps> = ({ onSuccess }) => {
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("description", data.description || "");
-      formData.append("visibility", data.isPublic.toString()); // ex: "PUBLIC"
+      formData.append("visibility", data.isPublic ? 'PUBLIC' : 'SUBSCRIBERS'); // ex: "PUBLIC"
 
       selectedFiles.forEach((file) => {
         formData.append("files", file);
       });
 
-       await uploadMedia(formData);
+       await createPost(formData);
 
       toast({
         title: 'Upload successful',
