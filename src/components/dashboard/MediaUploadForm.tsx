@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -70,24 +71,24 @@ const MediaUploadForm: React.FC<MediaUploadFormProps> = ({ onSuccess }) => {
   const validateFiles = async (existingFiles: File[], newFiles: File[]): Promise<string | null> => {
     const totalFiles = existingFiles.length + newFiles.length;
     if (totalFiles > MAX_FILES) return `You can only upload up to ${MAX_FILES} files at once`;
-    
+
     for (const file of newFiles) {
       if (file.size > MAX_FILE_SIZE) return 'Each file must be less than 50MB';
       if (!ACCEPTED_TYPES.includes(file.type)) return 'Only JPEG, PNG, WebP images and MP4, WebM videos are supported';
-      
+
       if (file.type.startsWith('video/')) {
         const duration = await getVideoDuration(file);
         if (duration > 30) return 'Videos must be 30 seconds or less';
       }
     }
-    
+
     return null;
   };
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(event.target.files || []);
     const error = await validateFiles(selectedFiles, newFiles);
-    
+
     if (error) {
       toast({
         variant: 'destructive',
@@ -102,7 +103,7 @@ const MediaUploadForm: React.FC<MediaUploadFormProps> = ({ onSuccess }) => {
       file,
       url: URL.createObjectURL(file)
     }));
-    
+
     setSelectedFiles(prev => [...prev, ...newFiles]);
     setPreviews(prev => [...prev, ...newPreviews]);
   };
@@ -112,7 +113,7 @@ const MediaUploadForm: React.FC<MediaUploadFormProps> = ({ onSuccess }) => {
     URL.revokeObjectURL(newPreviews[index].url);
     newPreviews.splice(index, 1);
     setPreviews(newPreviews);
-    
+
     const newFiles = [...selectedFiles];
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
@@ -137,19 +138,17 @@ const MediaUploadForm: React.FC<MediaUploadFormProps> = ({ onSuccess }) => {
 
     try {
       const totalFiles = selectedFiles.length;
-      let completedFiles = 0;
 
-      await Promise.all(selectedFiles.map(async (file) => {
-        const formData = new FormData();
-        formData.append('title', data.title);
-        if (data.description) formData.append('description', data.description);
-        formData.append('isPublic', data.isPublic.toString());
-        formData.append('file', file);
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("description", data.description || "");
+      formData.append("visibility", data.isPublic.toString()); // ex: "PUBLIC"
 
-        await uploadMedia(formData);
-        completedFiles++;
-        setUploadProgress((completedFiles / totalFiles) * 100);
-      }));
+      selectedFiles.forEach((file) => {
+        formData.append("files", file);
+      });
+
+       await uploadMedia(formData);
 
       toast({
         title: 'Upload successful',
