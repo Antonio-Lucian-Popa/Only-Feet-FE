@@ -12,6 +12,6 @@ export const getCreator = async (id: string) => {
 };
 
 export const createPost = async (formData: FormData) => {
-  const response = await api.post<{ data: Post }>(`/posts/`, formData);
+  const response = await api.post<{ data: Post }>(`/posts`, formData, {});
   return response.data;
 }
